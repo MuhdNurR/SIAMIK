@@ -32,8 +32,10 @@
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
+
   <!-- ChartJS -->
   <script src="plugins/chart.js/Chart.min.js"></script>
+
 </head>
 <?php
 session_start();
@@ -95,7 +97,7 @@ while ($row = mysqli_fetch_array($CekIPS)) {
           </ul>
           <div class="tab-content mt-2" id="custom-content-above-tabContent">
             <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example3" class="table table-bordered table-striped">
                 <thead>
                   <tr>
                     <th>Nomor</th>
@@ -235,12 +237,12 @@ while ($row = mysqli_fetch_array($CekIPS)) {
   <!-- Page specific script -->
   <script>
     $(function() {
-      $("#example1").DataTable({
+      $("#example3").DataTable({
         "responsive": true,
         "lengthChange": false,
         "autoWidth": false,
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      }).buttons().container().appendTo('#example3_wrapper .col-md-6:eq(0)');
       $('#example2').DataTable({
         "paging": true,
         "lengthChange": false,

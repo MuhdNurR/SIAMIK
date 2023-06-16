@@ -26,12 +26,6 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
   <!-- DataTables -->
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -76,135 +70,139 @@ $totalSKS = mysqli_fetch_assoc($sum)['TotalSKS'];
 
       <!-- Main content -->
       <section class="content">
-        <div class="container-fluid">
-          <!-- Small boxes (Stat box) -->
-          <!-- Main row -->
-          <h4>Kartu Rencana Studi</h4>
-          <table id="example1" class="table table-bordered table-striped">
-            <thead>
-              <tr>
-                <th>Nomor</th>
-                <th>ID Mata Kuliah</th>
-                <th>Mata Kuliah</th>
-                <th>SKS</th>
-                <th>Hari</th>
-                <th>Jam Mulai</th>
-                <th>Jam Selesai</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
-              if (mysqli_num_rows($query) > 0) { ?>
+        <div class="card-body">
+          <div class="container-fluid">
+            <!-- Small boxes (Stat box) -->
+            <!-- Main row -->
+            <h4>Kartu Rencana Studi</h4>
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Nomor</th>
+                  <th>ID Mata Kuliah</th>
+                  <th>Mata Kuliah</th>
+                  <th>SKS</th>
+                  <th>Hari</th>
+                  <th>Jam Mulai</th>
+                  <th>Jam Selesai</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody>
                 <?php
-                $no = 1;
-                while ($data = mysqli_fetch_array($query)) {
-                  $idmatkul = $data['IdMatakuliah'];
-                ?>
-                  <tr>
-                    <td><?php echo $no ?></td>
-                    <td><?php echo $data["NamaMataKuliah"]; ?></td>
-                    <td><?php echo $data["KodeMataKuliah"]; ?></td>
-                    <td><?php echo $data["SKS"]; ?></td>
-                    <td><?php echo $data["Hari"]; ?></td>
-                    <td><?php echo $data["JamMulai"]; ?></td>
-                    <td><?php echo $data["JamSelesai"]; ?></td>
-                    <td><a href="action/delete_krs.php?IdMataKuliah=<?php echo $idmatkul; ?>">
-                        <button type="button" class="btn btn-danger toastrDefaultWarning">Hapus</button></a></td>
-                  </tr>
-                <?php $no++;
-                } ?>
-              <?php } ?>
-              <tr>
-                <td colspan="0"></td>
-                <td><strong>Total SKS</strong></td>
-                <td colspan="1"></td>
-                <td class="font-weight-bold" colspan="5"><?php echo $totalSKS; ?></td>
-              </tr>
-            </tbody>
-          </table>
-          <?php
-          if ($totalSKS == 24) {
-          ?>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg" disabled>
-              Tambah KRS
-            </button>
-          <?php
-          } else {
-          ?>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
-              Tambah KRS
-            </button>
-          <?php
-          }
-          ?>
+                if (mysqli_num_rows($query) > 0) { ?>
+                  <?php
+                  $no = 1;
+                  while ($data = mysqli_fetch_array($query)) {
+                    $idmatkul = $data['IdMatakuliah'];
+                  ?>
+                    <tr>
+                      <td><?php echo $no ?></td>
+                      <td><?php echo $data["NamaMataKuliah"]; ?></td>
+                      <td><?php echo $data["KodeMataKuliah"]; ?></td>
+                      <td><?php echo $data["SKS"]; ?></td>
+                      <td><?php echo $data["Hari"]; ?></td>
+                      <td><?php echo $data["JamMulai"]; ?></td>
+                      <td><?php echo $data["JamSelesai"]; ?></td>
+                      <td><a href="action/delete_krs.php?IdMataKuliah=<?php echo $idmatkul; ?>">
+                          <button type="button" class="btn btn-danger toastrDefaultWarning">Hapus</button></a></td>
+                    </tr>
+                  <?php $no++;
+                  } ?>
+                <?php } ?>
+                <tr>
+                  <td colspan="0"></td>
+                  <td><strong>Total SKS</strong></td>
+                  <td colspan="1"></td>
+                  <td class="font-weight-bold" colspan="5"><?php echo $totalSKS; ?></td>
+                </tr>
+              </tbody>
+            </table>
+            <?php
+            if ($totalSKS == 24) {
+            ?>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg" disabled>
+                Tambah KRS
+              </button>
+            <?php
+            } else {
+            ?>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-lg">
+                Tambah KRS
+              </button>
+            <?php
+            }
+            ?>
 
-          <div class="modal fade" id="modal-lg">
-            <div class="modal-dialog modal-lg">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Form Tambah KRS</h4>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="modal-body">
-                  <form class="m-3" method="POST" action="action/proseskrs.php">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div class="form-group">
-                          <label>Mata Kuliah</label>
-                          <select class="form-control" name="matkul">
-                            <?php
-                            session_start();
-                            include 'action/koneksi.php';
-                            $query = "SELECT * FROM matakuliah";
-                            $hasil = mysqli_query($koneksi, $query);
-                            $no = 0;
-                            while ($data = mysqli_fetch_array($hasil)) {
-                              $no++;
-                            ?>
-                              <option value="<?php echo $data['IdMataKuliah']; ?>">
-                                <?php echo $data['NamaMataKuliah']; ?></option>
-                            <?php } ?>
-                          </select>
+            <div class="modal fade" id="modal-lg">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h4 class="modal-title">Form Tambah KRS</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form class="m-3" method="POST" action="action/proseskrs.php">
+                      <div class="row">
+                        <div class="col-md-12">
+                          <div class="form-group">
+                            <label>Mata Kuliah</label>
+                            <select class="form-control" name="matkul">
+                              <?php
+                              session_start();
+                              include 'action/koneksi.php';
+                              $query = "SELECT * FROM matakuliah";
+                              $hasil = mysqli_query($koneksi, $query);
+                              $no = 0;
+                              while ($data = mysqli_fetch_array($hasil)) {
+                                $no++;
+                              ?>
+                                <option value="<?php echo $data['IdMataKuliah']; ?>">
+                                  <?php echo $data['NamaMataKuliah']; ?></option>
+                              <?php } ?>
+                            </select>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                  </div>
+                  <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="submit">Kirim Ajuan</button>
+                  </div>
+                  </form>
                 </div>
-                <div class="modal-footer justify-content-between">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary" name="submit">Kirim Ajuan</button>
-                </div>
-                </form>
+                <!-- /.modal-content -->
               </div>
-              <!-- /.modal-content -->
+              <!-- /.modal-dialog -->
             </div>
-            <!-- /.modal-dialog -->
+            <!-- /.modal -->
+            <a href="exportpdf.php"><button type="button" class="btn btn-primary">Export PDF KRS</button></a>
+            <a href="reportexcel_krs.php"><button type="button" class="btn btn-primary">Export Excel KRS</button></a>
+            <!-- /.row (main row) -->
           </div>
-          <!-- /.modal -->
-          <a href="exportpdf.php"><button type="button" class="btn btn-primary">Export PDF KRS</button></a>
-          <a href="reportexcel_krs.php"><button type="button" class="btn btn-primary">Export Excel KRS</button></a>
-          <!-- /.row (main row) -->
+          <!-- /.container-fluid -->
         </div>
-        <!-- /.container-fluid -->
-      </section>
-      <!-- /.content -->
+        <!-- /.card -->
     </div>
-    <!-- /.content-wrapper -->
-    <footer class="main-footer">
-      <strong>Copyright &copy; 2023 <a href="">R&A</a>.</strong>
-      All rights reserved.
-      <div class="float-right d-none d-sm-inline-block">
-        <b>www.upnjatim.ac.id</b>
-      </div>
-    </footer>
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2023 <a href="">R&A</a>.</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>www.upnjatim.ac.id</b>
+    </div>
+  </footer>
 
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-      <!-- Control sidebar content goes here -->
-    </aside>
-    <!-- /.control-sidebar -->
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
   </div>
   <!-- ./wrapper -->
 
