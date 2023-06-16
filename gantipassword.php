@@ -21,10 +21,10 @@
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
                 <!-- Satu halaman untuk semua user, buat pengecekan dia termasuk user apa -->
-                <a href="dashboarddosen.php" class="h1"><b>Admin</b>LTE</a>
-
+                <a href="dashboarddosen.php" class="h1"><b>SIAMIK</b> 2.0</a>
             </div>
             <div class="card-body">
+
                 <p class="login-box-msg">You are only one step a way from your new password, recover your password now.</p>
                 <form action="login.php" method="post">
                     <div class="input-group mb-3">

@@ -139,7 +139,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <div class="card-header">
                                             <h5 class="card-title m-0">E - Learning</h5>
                                         </div>
-                                        <img width="155" src="e-learning.png" style="align-self: center;">
+                                        <img width="155" src="images/e-learning.png" style="align-self: center;">
                                         <div class="card-body">
                                             <a href="https://ilmu.upnjatim.ac.id/" class="btn btn-outline-primary mt-4">Akses E-Learning</a>
                                         </div>

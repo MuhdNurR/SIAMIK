@@ -36,7 +36,8 @@ $query = mysqli_query($koneksi, "SELECT mahasiswa.Nama, matakuliah.NamaMataKulia
 	JOIN kehadiran_matakuliah ON mahasiswa.Id = kehadiran_matakuliah.IdMahasiswa
 	JOIN matakuliah on kehadiran_matakuliah.IdMataKuliah = matakuliah.IdMataKuliah
 	WHERE mahasiswa.Id 	= $id");
-	?>
+?>
+
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
     <?php include "sidebarmhs.php" ?>
@@ -70,27 +71,28 @@ $query = mysqli_query($koneksi, "SELECT mahasiswa.Nama, matakuliah.NamaMataKulia
         <div class="container-fluid">
           <!-- Small boxes (Stat box) -->
           <!-- Main row -->
-					<h4>Presensi</h4>
-						<table class="table table-bordered table-striped">
-						<tr>
-							<th>Nomor</th>
-							<th>Mata Kuliah</th>
-							<th>Kehadiran</th>
-						</tr>
-						<?php if(mysqli_num_rows($query)>0){ ?>
-							<?php
-							$no = 1;
-							while($data = mysqli_fetch_array($query)){
-								?>
-								<tr>
-									<td><?php echo $no ?></td>
-									<td><?php echo $data["NamaMataKuliah"]; ?></td>
-									<td><?php echo $data["Kehadiran"]; ?></td>
-								</tr>
-								<?php $no++; } ?>
-							<?php } ?>
-						</table>
-						<a href="action/exportpdf_presensi.php"><button type="button" class="btn btn-primary">Export Presensi</button></a>
+          <h4>Presensi</h4>
+          <table class="table table-bordered table-striped">
+            <tr>
+              <th>Nomor</th>
+              <th>Mata Kuliah</th>
+              <th>Kehadiran</th>
+            </tr>
+            <?php if (mysqli_num_rows($query) > 0) { ?>
+              <?php
+              $no = 1;
+              while ($data = mysqli_fetch_array($query)) {
+              ?>
+                <tr>
+                  <td><?php echo $no ?></td>
+                  <td><?php echo $data["NamaMataKuliah"]; ?></td>
+                  <td><?php echo $data["Kehadiran"]; ?></td>
+                </tr>
+              <?php $no++;
+              } ?>
+            <?php } ?>
+          </table>
+          <a href="action/exportpdf_presensi.php"><button type="button" class="btn btn-primary">Export Presensi</button></a>
           <!-- /.row (mionain row) -->
         </div>
         <!-- /.container-fluid -->

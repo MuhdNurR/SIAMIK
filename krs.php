@@ -26,28 +26,33 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-
-  <!-- SweetAlert2 -->
-  <link rel="stylesheet" href="plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
-  <!-- Toastr -->
-  <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
 
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
 <?php
 session_start();
 $id = $_SESSION['id'];
 require('action/koneksi.php');
+$query = mysqli_query($koneksi, "SELECT matakuliah.SKS, matakuliah.KodeMataKuliah, matakuliah.NamaMataKuliah, kelas.IdMatakuliah, jadwal.Hari, jadwal.JamMulai, jadwal.JamSelesai FROM mahasiswa JOIN krs ON mahasiswa.Id = krs.Id JOIN matakuliah on krs.IdMataKuliah = matakuliah.IdMataKuliah JOIN kelas ON kelas.IdMataKuliah = matakuliah.IdMataKuliah JOIN jadwal ON jadwal.IdKelas = kelas.IdKelas WHERE mahasiswa.Id = $id");
+$sum = mysqli_query($koneksi, "SELECT SUM(matakuliah.SKS) AS TotalSKS FROM mahasiswa JOIN krs ON mahasiswa.Id = krs.Id JOIN matakuliah on krs.IdMataKuliah = matakuliah.IdMataKuliah JOIN kelas ON kelas.IdMataKuliah = matakuliah.IdMataKuliah JOIN jadwal ON jadwal.IdKelas = kelas.IdKelas WHERE mahasiswa.Id = 3");
+$totalSKS = mysqli_fetch_assoc($sum)['TotalSKS'];
 ?>
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
     <?php include "sidebarmhs.php" ?>
-    <!-- Preloader
-    <div class="preloader flex-column justify-content-center align-items-center">
-      <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-    </div> -->
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -75,48 +80,48 @@ require('action/koneksi.php');
           <!-- Small boxes (Stat box) -->
           <!-- Main row -->
           <h4>Kartu Rencana Studi</h4>
-          <table class="table table-bordered table-striped">
-            <tr>
-              <th>Nomor</th>
-              <th>ID Mata Kuliah</th>
-              <th>Mata Kuliah</th>
-              <th>SKS</th>
-              <th>Hari</th>
-              <th>Jam Mulai</th>
-              <th>Jam Selesai</th>
-              <th>Aksi</th>
-            </tr>
-            <?php
-            $query = mysqli_query($koneksi, "SELECT matakuliah.SKS, matakuliah.KodeMataKuliah, matakuliah.NamaMataKuliah, kelas.IdMatakuliah, jadwal.Hari, jadwal.JamMulai, jadwal.JamSelesai FROM mahasiswa JOIN krs ON mahasiswa.Id = krs.Id JOIN matakuliah on krs.IdMataKuliah = matakuliah.IdMataKuliah JOIN kelas ON kelas.IdMataKuliah = matakuliah.IdMataKuliah JOIN jadwal ON jadwal.IdKelas = kelas.IdKelas WHERE mahasiswa.Id = $id");
-            $sum = mysqli_query($koneksi, "SELECT SUM(matakuliah.SKS) AS TotalSKS FROM mahasiswa JOIN krs ON mahasiswa.Id = krs.Id JOIN matakuliah on krs.IdMataKuliah = matakuliah.IdMataKuliah JOIN kelas ON kelas.IdMataKuliah = matakuliah.IdMataKuliah JOIN jadwal ON jadwal.IdKelas = kelas.IdKelas WHERE mahasiswa.Id = 3");
-            $totalSKS = mysqli_fetch_assoc($sum)['TotalSKS'];
-            if (mysqli_num_rows($query) > 0) {
-              $no = 1;
-              while ($data = mysqli_fetch_array($query)) {
-                $idmatkul = $data['IdMatakuliah'];
-            ?>
-                <tr>
-                  <td><?php echo $no ?></td>
-                  <td><?php echo $data["NamaMataKuliah"]; ?></td>
-                  <td><?php echo $data["KodeMataKuliah"]; ?></td>
-                  <td><?php echo $data["SKS"]; ?></td>
-                  <td><?php echo $data["Hari"]; ?></td>
-                  <td><?php echo $data["JamMulai"]; ?></td>
-                  <td><?php echo $data["JamSelesai"]; ?></td>
-                  <td><a href="action/delete_krs.php?IdMataKuliah=<?php echo $idmatkul; ?>">
-                      <button type="button" class="btn btn-danger toastrDefaultWarning">Hapus</button></a></td>
-                </tr>
-            <?php
-                $no++;
-              }
-            }
-            ?>
-            <tr>
-              <td colspan="0"></td>
-              <td><strong>Total SKS</strong></td>
-              <td colspan="1"></td>
-              <td class="font-weight-bold" colspan="5"><?php echo $totalSKS; ?></td>
-            </tr>
+          <table id="example1" class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th>Nomor</th>
+                <th>ID Mata Kuliah</th>
+                <th>Mata Kuliah</th>
+                <th>SKS</th>
+                <th>Hari</th>
+                <th>Jam Mulai</th>
+                <th>Jam Selesai</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              if (mysqli_num_rows($query) > 0) { ?>
+                <?php
+                $no = 1;
+                while ($data = mysqli_fetch_array($query)) {
+                  $idmatkul = $data['IdMatakuliah'];
+                ?>
+                  <tr>
+                    <td><?php echo $no ?></td>
+                    <td><?php echo $data["NamaMataKuliah"]; ?></td>
+                    <td><?php echo $data["KodeMataKuliah"]; ?></td>
+                    <td><?php echo $data["SKS"]; ?></td>
+                    <td><?php echo $data["Hari"]; ?></td>
+                    <td><?php echo $data["JamMulai"]; ?></td>
+                    <td><?php echo $data["JamSelesai"]; ?></td>
+                    <td><a href="action/delete_krs.php?IdMataKuliah=<?php echo $idmatkul; ?>">
+                        <button type="button" class="btn btn-danger toastrDefaultWarning">Hapus</button></a></td>
+                  </tr>
+                <?php $no++;
+                } ?>
+              <?php } ?>
+              <tr>
+                <td colspan="0"></td>
+                <td><strong>Total SKS</strong></td>
+                <td colspan="1"></td>
+                <td class="font-weight-bold" colspan="5"><?php echo $totalSKS; ?></td>
+              </tr>
+            </tbody>
           </table>
           <?php
           if ($totalSKS == 24) {
@@ -133,6 +138,7 @@ require('action/koneksi.php');
           <?php
           }
           ?>
+
           <div class="modal fade" id="modal-lg">
             <div class="modal-dialog modal-lg">
               <div class="modal-content">
@@ -239,7 +245,6 @@ require('action/koneksi.php');
 
     });
   </script>
-
   <!-- jQuery -->
   <script src="plugins/jquery/jquery.min.js"></script>
   <!-- jQuery UI 1.11.4 -->
@@ -274,6 +279,44 @@ require('action/koneksi.php');
   <script src="dist/js/demo.js"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
   <script src="dist/js/pages/dashboard.js"></script>
+
+  <!-- DataTables  & Plugins -->
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="plugins/jszip/jszip.min.js"></script>
+  <script src="plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="dist/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="dist/js/demo.js"></script>
+  <!-- Page specific script -->
+  <script>
+    $(function() {
+      $("#example1").DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 </body>
 
 </html>

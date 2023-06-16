@@ -26,6 +26,12 @@
   <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
   <!-- ChartJS -->
   <script src="plugins/chart.js/Chart.min.js"></script>
 </head>
@@ -87,37 +93,36 @@ while ($row = mysqli_fetch_array($CekIPS)) {
               <a class="nav-link" id="custom-content-above-profile-tab" data-toggle="pill" href="#custom-content-above-profile" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">Grafik IPS</a>
             </li>
           </ul>
-          <div class="tab-content" id="custom-content-above-tabContent">
+          <div class="tab-content mt-2" id="custom-content-above-tabContent">
             <div class="tab-pane fade show active" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
-              <p class="h4 mt-2">
-                <?php echo $_SESSION['nama']; ?> |
-                <?php echo $_SESSION['npm']; ?>
-              </p>
-              <table class="table table-bordered table-striped">
-                <tr>
-                  <th>Nomor</th>
-                  <th>Mata Kuliah</th>
-                  <th>Semester</th>
-                  <th>SKS</th>
-                  <th>IP</th>
-                </tr>
-                <?php if (mysqli_num_rows($query) > 0) { ?>
-                  <?php
-                  $no = 1;
-                  while ($data = mysqli_fetch_array($query)) {
-                  ?>
-                    <tr>
-                      <td><?php echo $no ?></td>
-                      <td><?php echo $data["NamaMataKuliah"]; ?></td>
-                      <td><?php echo $data["Semester"]; ?></td>
-                      <td><?php echo $data["SKS"]; ?></td>
-                      <td><?php echo $data["IPS"]; ?></td>
-                    </tr>
-                  <?php $no++;
-                  } ?>
-                <?php } ?>
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Nomor</th>
+                    <th>Mata Kuliah</th>
+                    <th>Semester</th>
+                    <th>SKS</th>
+                    <th>IP</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php if (mysqli_num_rows($query) > 0) { ?>
+                    <?php
+                    $no = 1;
+                    while ($data = mysqli_fetch_array($query)) {
+                    ?>
+                      <tr>
+                        <td><?php echo $no ?></td>
+                        <td><?php echo $data["NamaMataKuliah"]; ?></td>
+                        <td><?php echo $data["Semester"]; ?></td>
+                        <td><?php echo $data["SKS"]; ?></td>
+                        <td><?php echo $data["IPS"]; ?></td>
+                      </tr>
+                    <?php $no++;
+                    } ?>
+                  <?php } ?>
+                </tbody>
               </table>
-              <a href="action/exportpdf_transkrip.php"><button type="button" class="btn btn-primary">Export Transkrip</button></a>
             </div>
             <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab">
               <div class="mb-5">
@@ -185,7 +190,8 @@ while ($row = mysqli_fetch_array($CekIPS)) {
   </script>
   <!-- Bootstrap 4 -->
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-
+  <!-- ChartJS -->
+  <script src="plugins/chart.js/Chart.min.js"></script>
   <!-- Sparkline -->
   <script src="plugins/sparklines/sparkline.js"></script>
   <!-- JQVMap -->
@@ -208,6 +214,44 @@ while ($row = mysqli_fetch_array($CekIPS)) {
   <script src="dist/js/demo.js"></script>
   <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
   <script src="dist/js/pages/dashboard.js"></script>
+
+  <!-- DataTables  & Plugins -->
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="plugins/jszip/jszip.min.js"></script>
+  <script src="plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="dist/js/adminlte.min.js"></script>
+  <!-- AdminLTE for demo purposes -->
+  <script src="dist/js/demo.js"></script>
+  <!-- Page specific script -->
+  <script>
+    $(function() {
+      $("#example1").DataTable({
+        "responsive": true,
+        "lengthChange": false,
+        "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": false,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 </body>
 
 </html>
