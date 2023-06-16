@@ -186,7 +186,7 @@ while ($row = mysqli_fetch_array($query)) {
                                             <ul class="list-unstyled">
                                                 <li class="show">
                                                     <div class="datepicker">
-                                                        <div class="datepicker-days" style="">
+                                                        <div class="datepicker-days">
                                                             <table class="table table-sm">
                                                                 <thead>
                                                                     <tr>
